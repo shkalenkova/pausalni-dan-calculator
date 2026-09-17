@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор: Paušální daň vs классический режим (Voinova.tax)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#9DB79E;
+    --sage-dark:#7E9C81;
+    --soft-green:#E8F1E9;
+    --light-blue:#E6EEF6;
+    --camel:#D8B892;
+    --camel-dark:#C79F70;
+    --teal:#6F8F8D;
+    --teal-deep:#4F6B69;
+    --ink:#333333;
+    --chrome:#F2F3F5;
+    --cream:#FAF8F4;
+    --white:#FFFFFF;
+    --pass:#5E8C6A;
+    --fail:#B5654A;
+    --radius:16px;
+    --radius-sm:10px;
+    --shadow:0 2px 14px rgba(51,51,51,0.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--cream);color:var(--ink);
+    font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;
+    padding-bottom:96px;
+  }
+  h1,h2,h3,h4{font-family:'Merriweather',serif;font-weight:700;margin:0 0 8px;color:var(--teal-deep);}
+  a{color:inherit;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* Header */
+  header.site{
+    background:var(--white);border-bottom:1px solid #ECE7DD;
+    position:sticky;top:0;z-index:20;
+  }
+  header.site .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;}
+  .logo{font-family:'Merriweather',serif;font-weight:700;font-size:20px;color:var(--teal-deep);text-decoration:none;letter-spacing:0.2px;}
+  .header-btn{
+    background:var(--teal-deep);color:var(--white);text-decoration:none;
+    padding:10px 20px;border-radius:100px;font-size:14px;font-weight:600;
+    transition:background .15s ease;white-space:nowrap;
+  }
+  .header-btn:hover{background:var(--teal);}
+
+  /* Hero */
+  .hero{padding:44px 0 12px;}
+  .eyebrow{
+    display:inline-block;background:var(--soft-green);color:var(--sage-dark);
+    font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    padding:6px 14px;border-radius:100px;margin-bottom:14px;
+  }
+  .hero h1{font-size:32px;max-width:680px;}
+  .hero .lead{font-size:16.5px;max-width:640px;color:#4B4B4B;}
+
+  /* Cards */
+  .card{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:26px 26px 28px;margin-top:22px;
+  }
+  .card h2{font-size:19px;margin-bottom:4px;}
+  .card .subtitle{color:#767676;font-size:13.5px;margin-bottom:18px;}
+
+  /* Form fields */
+  .field{margin-bottom:20px;}
+  .field label{
+    display:block;font-weight:600;font-size:13.5px;margin-bottom:8px;color:var(--teal-deep);
+  }
+  select.input, input.input{
+    width:100%;padding:13px 14px;border:1.5px solid #E3DED2;border-radius:var(--radius-sm);
+    font-family:'Inter',sans-serif;font-size:15.5px;color:var(--ink);background:var(--white);
+    transition:border-color .15s ease;
+  }
+  select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%236F8F8D' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+  .input:focus{outline:none;border-color:var(--sage);}
+  .input-suffix-wrap{position:relative;}
+  .input-suffix-wrap .input{padding-right:46px;}
+  .input-suffix{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#8B8B8B;font-size:14px;pointer-events:none;}
+  .hint{font-size:12.5px;color:#8B8B8B;margin-top:6px;}
+
+  /* Toggle switch */
+  .toggle-group{
+    display:flex;background:var(--chrome);border-radius:100px;padding:4px;gap:4px;
+  }
+  .toggle-opt{
+    flex:1;text-align:center;padding:10px 12px;border-radius:100px;font-size:13.5px;font-weight:600;
+    color:#767676;cursor:pointer;transition:all .15s ease;user-select:none;
+  }
+  .toggle-opt.active{background:var(--white);color:var(--teal-deep);box-shadow:0 1px 4px rgba(51,51,51,0.1);}
+
+  .reveal{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .reveal.open{max-height:200px;}
+
+  /* Results */
+  .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px;}
+  @media (max-width:680px){.result-grid{grid-template-columns:1fr;}}
+  .result-card{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:22px 22px 20px;border-top:4px solid var(--sage);
+  }
+  .result-card.pausal{border-top-color:var(--camel);}
+  .result-card h3{font-size:16.5px;margin-bottom:2px;}
+  .result-card .rc-sub{font-size:12.5px;color:#8B8B8B;margin-bottom:16px;}
+  .row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:9px 0;border-bottom:1px dashed #E9E4D8;font-size:14px;
+  }
+  .row:last-of-type{border-bottom:none;}
+  .row .rlabel{color:#5B5B5B;}
+  .row .rval{font-weight:600;font-variant-numeric:tabular-nums;}
+  .row.total{
+    margin-top:6px;padding-top:14px;border-top:1.5px solid #E3DED2;border-bottom:none;
+  }
+  .row.total .rlabel{font-weight:700;color:var(--teal-deep);font-size:14.5px;}
+  .row.total .rval{font-size:19px;color:var(--teal-deep);}
+
+  .unavailable{
+    background:var(--light-blue);border-radius:var(--radius-sm);padding:16px 16px;
+    font-size:13.5px;color:#3E5876;line-height:1.55;
+  }
+
+  /* Sticky bottom bar */
+  .sticky-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:30;
+    background:linear-gradient(90deg,var(--teal-deep),var(--teal));
+    color:var(--white);box-shadow:0 -4px 18px rgba(0,0,0,0.12);
+  }
+  .sticky-bar .wrap{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:14px 20px;flex-wrap:wrap;
+  }
+  .sb-sums{display:flex;gap:26px;flex-wrap:wrap;}
+  .sb-sum .sb-label{font-size:11.5px;opacity:.75;text-transform:uppercase;letter-spacing:.03em;}
+  .sb-sum .sb-value{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .sb-badge{
+    background:rgba(255,255,255,.14);padding:9px 18px;border-radius:100px;
+    font-size:13.5px;font-weight:700;white-space:nowrap;
+  }
+  .sb-badge.pass{background:var(--sage);}
+  .sb-badge.camel{background:var(--camel-dark);}
+
+  /* Disclaimer */
+  .disclaimer{
+    background:var(--soft-green);border-radius:var(--radius-sm);padding:16px 18px;
+    font-size:12.5px;color:#4F6B69;line-height:1.6;margin-top:22px;
+  }
+
+  footer.site{
+    text-align:center;padding:26px 20px 40px;color:#9B9B9B;font-size:12.5px;
+  }
+  footer.site a{color:#767676;text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="https://voinova.tax/">voinova.tax</a>
+    <a class="header-btn" href="https://voinova.tax/">Мои услуги</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <span class="eyebrow">Калькулятор для OSVČ</span>
+    <h1>Paušální daň или классический режим: что выгоднее в 2026 году</h1>
+    <p class="lead">Выберите вид деятельности и укажите годовой доход, калькулятор сам покажет,
+      сколько вы заплатите в каждом режиме и на сколько Kč в год один вариант выгоднее другого.</p>
+  </section>
+
+  <div class="card">
+    <h2>Ваши данные</h2>
+    <p class="subtitle">Заполните два поля, всё остальное калькулятор посчитает сам</p>
+
+    <div class="field">
+      <label for="activity">Вид деятельности</label>
+      <select id="activity" class="input"></select>
+      <p class="hint" id="activityHint"></p>
+    </div>
+
+    <div class="field">
+      <label for="income">Годовой доход (příjmy), Kč</label>
+      <div class="input-suffix-wrap">
+        <input id="income" class="input" type="text" inputmode="decimal" placeholder="например, 1 200 000">
+        <span class="input-suffix">Kč</span>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:0;">
+      <label>Как считать расходы для классического режима</label>
+      <div class="toggle-group" id="expenseToggle">
+        <div class="toggle-opt active" data-mode="percent">Стандартный вычет (% по виду деятельности)</div>
+        <div class="toggle-opt" data-mode="actual">Знаю точную сумму расходов</div>
+      </div>
+      <div class="reveal" id="actualReveal">
+        <div class="field" style="margin-top:16px;margin-bottom:0;">
+          <label for="actualExpenses">Фактические расходы за год, Kč</label>
+          <div class="input-suffix-wrap">
+            <input id="actualExpenses" class="input" type="text" inputmode="decimal" placeholder="например, 650 000">
+            <span class="input-suffix">Kč</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-grid">
+    <div class="result-card">
+      <h3>Классический режим</h3>
+      <p class="rc-sub">Доходы минус расходы, обычные соцстрах, медстрах и налог</p>
+      <div class="row"><span class="rlabel">Výdaje (расходы)</span><span class="rval" id="r_vydaje">…</span></div>
+      <div class="row"><span class="rlabel">Základ daně</span><span class="rval" id="r_zaklad">…</span></div>
+      <div class="row"><span class="rlabel">Sociální pojištění</span><span class="rval" id="r_socialni">…</span></div>
+      <div class="row"><span class="rlabel">Zdravotní pojištění</span><span class="rval" id="r_zdravotni">…</span></div>
+      <div class="row"><span class="rlabel">Daň z příjmů</span><span class="rval" id="r_dan">…</span></div>
+      <div class="row total"><span class="rlabel">Итого в год</span><span class="rval" id="r_celkem">…</span></div>
+    </div>
+
+    <div class="result-card pausal">
+      <h3>Paušální daň</h3>
+      <p class="rc-sub" id="p_sub">Фиксированный ежемесячный платёж</p>
+      <div id="p_body">
+        <div class="row"><span class="rlabel">Pásmo</span><span class="rval" id="p_pasmo">…</span></div>
+        <div class="row"><span class="rlabel">Daň z příjmů</span><span class="rval" id="p_dan">…</span></div>
+        <div class="row"><span class="rlabel">Sociální pojištění</span><span class="rval" id="p_socialni">…</span></div>
+        <div class="row"><span class="rlabel">Zdravotní pojištění</span><span class="rval" id="p_zdravotni">…</span></div>
+        <div class="row"><span class="rlabel">Платёж в месяц</span><span class="rval" id="p_mesic">…</span></div>
+        <div class="row total"><span class="rlabel">Итого в год</span><span class="rval" id="p_celkem">…</span></div>
+      </div>
+      <div class="unavailable" id="p_unavailable" style="display:none;">
+        При таком доходе paušální daň недоступна: лимит для входа в режим: 2 000 000 Kč в год.
+        Расчёт классического режима слева продолжает действовать как обычно.
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    Это ориентировочный расчёт для одного вида деятельности на условиях 2026 года
+    (с учётом ретроактивного снижения I pásma paušální daně и минимальных взносов с 1.7.2026).
+    Учтена только базовая sleva na poplatníka, без льгот на детей, manžela/ku и других вычетов.
+    Расчёт не заменяет индивидуальную налоговую консультацию.
+  </div>
+
+
+</div>
+
+<div class="sticky-bar">
+  <div class="wrap">
+    <div class="sb-sums">
+      <div class="sb-sum">
+        <div class="sb-label">Классический режим</div>
+        <div class="sb-value" id="sb_classic">…</div>
+      </div>
+      <div class="sb-sum">
+        <div class="sb-label">Paušální daň</div>
+        <div class="sb-value" id="sb_pausal">…</div>
+      </div>
+    </div>
+    <div class="sb-badge" id="sb_badge">Заполните данные</div>
+  </div>
+</div>
+
+<footer class="site">
+  <p>Voinova.tax, бухгалтерские услуги Натальи Воиновой в Чехии.</p>
+</footer>
+
+<script>
+  // ===================== CONFIG 2026 =====================
+  const CONFIG = {
+    activities: [
+      { id:'remesl', label:'80% - ремесленная živnost',                 rate:0.80, cap:1600000 },
+      { id:'obyc',   label:'60% - ostatní živnosti',                    rate:0.60, cap:1200000 },
+      { id:'svob',   label:'40% - свободная профессия / иная деятельность', rate:0.40, cap: 800000 },
+      { id:'najem',  label:'30% - nájem v obchodním majetku',           rate:0.30, cap: 600000 },
+    ],
+    social:   { base:0.55, rate:0.292, minRocne:60060 },
+    zdravotni:{ base:0.50, rate:0.135, minRocne:39672 },
+    danRate1:0.15, danRate2:0.23, prah23:1762812,
+    slevaNaPoplatnika:30840,
+    pasma: {
+      1: { dan:100,  socialni:5756,  zdravotni:3306, mesic:9162,  rocne:109944 },
+      2: { dan:4963, socialni:8191,  zdravotni:3591, mesic:16745, rocne:200940 },
+      3: { dan:9320, socialni:12527, zdravotni:5292, mesic:27139, rocne:325668 },
+    },
+    limitVstup: 2000000,
+  };
+
+  // ===================== live number formatting (как в ZDP-калькуляторе) =====================
+  function num(str){
+    if (typeof str !== 'string') return Number(str) || 0;
+    const cleaned = str.replace(/\s/g, '').replace(',', '.');
+    const v = parseFloat(cleaned);
+    return isNaN(v) ? 0 : v;
+  }
+  function groupDigits(digitsStr){
+    return digitsStr.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+  function fmtInput(value){
+    if (value === '' || value === null || value === undefined) return '';
+    const n = Math.round(num(String(value)));
+    return groupDigits(String(Math.max(0, n)));
+  }
+  function reformatLive(el){
+    const raw = el.value;
+    const digitsOnly = raw.replace(/[^\d]/g, '');
+    if (digitsOnly === ''){ el.value = ''; return; }
+    const grouped = groupDigits(digitsOnly);
+    el.value = grouped;
+  }
+  function fmt(n){
+    return Math.round(n).toLocaleString('cs-CZ').replace(/,/g,' ') + ' Kč';
+  }
+
+  // ===================== pásmo logic (раздел 3 ТЗ) =====================
+  function getPasmo(income, rate){
+    if (income > CONFIG.limitVstup) return null;
+    if (income <= 1000000) return 1;
+    if (income <= 1500000) return (rate === 0.8 || rate === 0.6) ? 1 : 2;
+    // income <= 2 000 000
+    if (rate === 0.8) return 1;
+    if (rate === 0.6) return 2;
+    return 3;
+  }
+
+  // ===================== DOM refs =====================
+  const activitySel = document.getElementById('activity');
+  const activityHint = document.getElementById('activityHint');
+  const incomeInput = document.getElementById('income');
+  const actualExpensesInput = document.getElementById('actualExpenses');
+  const toggleGroup = document.getElementById('expenseToggle');
+  const actualReveal = document.getElementById('actualReveal');
+
+  let expenseMode = 'percent';
+
+  CONFIG.activities.forEach((a, i) => {
+    const opt = document.createElement('option');
+    opt.value = a.id;
+    opt.textContent = a.label;
+    activitySel.appendChild(opt);
+  });
+  activitySel.value = 'obyc';
+
+  toggleGroup.querySelectorAll('.toggle-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      toggleGroup.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      expenseMode = opt.dataset.mode;
+      actualReveal.classList.toggle('open', expenseMode === 'actual');
+      calculate();
+    });
+  });
+
+  [incomeInput, actualExpensesInput].forEach(el => {
+    el.addEventListener('input', () => { reformatLive(el); calculate(); });
+  });
+  activitySel.addEventListener('change', () => { updateActivityHint(); calculate(); });
+
+  function updateActivityHint(){
+    const a = CONFIG.activities.find(x => x.id === activitySel.value);
+    activityHint.textContent = a
+      ? `Стандартный вычет: ${Math.round(a.rate*100)}% от дохода, потолок вычета ${fmt(a.cap)} в год`
+      : '';
+  }
+
+  // ===================== calculation =====================
+  function calculate(){
+    const a = CONFIG.activities.find(x => x.id === activitySel.value) || CONFIG.activities[1];
+    const income = num(incomeInput.value);
+
+    if (income <= 0){
+      resetOutputs();
+      return;
+    }
+
+    // --- классический режим ---
+    const vydaje = expenseMode === 'percent'
+      ? Math.min(income * a.rate, a.cap)
+      : num(actualExpensesInput.value);
+
+    const zaklad = Math.max(0, income - vydaje);
+    const socBase = zaklad * CONFIG.social.base;
+    const socialni = Math.max(socBase * CONFIG.social.rate, CONFIG.social.minRocne);
+    const zdrBase = zaklad * CONFIG.zdravotni.base;
+    const zdravotni = Math.max(zdrBase * CONFIG.zdravotni.rate, CONFIG.zdravotni.minRocne);
+    const danHruba = Math.min(zaklad, CONFIG.prah23) * CONFIG.danRate1
+                    + Math.max(0, zaklad - CONFIG.prah23) * CONFIG.danRate2;
+    const dan = Math.max(0, danHruba - CONFIG.slevaNaPoplatnika);
+    const klasickyCelkem = socialni + zdravotni + dan;
+
+    document.getElementById('r_vydaje').textContent = fmt(vydaje);
+    document.getElementById('r_zaklad').textContent = fmt(zaklad);
+    document.getElementById('r_socialni').textContent = fmt(socialni);
+    document.getElementById('r_zdravotni').textContent = fmt(zdravotni);
+    document.getElementById('r_dan').textContent = fmt(dan);
+    document.getElementById('r_celkem').textContent = fmt(klasickyCelkem);
+
+    // --- paušální daň ---
+    const pasmo = getPasmo(income, a.rate);
+    const pBody = document.getElementById('p_body');
+    const pUnavailable = document.getElementById('p_unavailable');
+    let pausalniCelkem = null;
+
+    if (pasmo === null){
+      pBody.style.display = 'none';
+      pUnavailable.style.display = 'block';
+      document.getElementById('p_sub').textContent = 'Недоступна при этом доходе';
+    } else {
+      const p = CONFIG.pasma[pasmo];
+      pausalniCelkem = p.rocne;
+      pBody.style.display = 'block';
+      pUnavailable.style.display = 'none';
+      document.getElementById('p_sub').textContent = 'Фиксированный ежемесячный платёж';
+      document.getElementById('p_pasmo').textContent = 'Pásmo ' + ['I','II','III'][pasmo-1];
+      document.getElementById('p_dan').textContent = fmt(p.dan * 12);
+      document.getElementById('p_socialni').textContent = fmt(p.socialni * 12);
+      document.getElementById('p_zdravotni').textContent = fmt(p.zdravotni * 12);
+      document.getElementById('p_mesic').textContent = fmt(p.mesic);
+      document.getElementById('p_celkem').textContent = fmt(p.rocne);
+    }
+
+    // --- итог / sticky bar ---
+    const sbBadge = document.getElementById('sb_badge');
+    document.getElementById('sb_classic').textContent = fmt(klasickyCelkem);
+
+    if (pausalniCelkem === null){
+      document.getElementById('sb_pausal').textContent = 'недоступна';
+      sbBadge.textContent = 'Paušální daň недоступна при этом доходе';
+      sbBadge.className = 'sb-badge';
+    } else {
+      document.getElementById('sb_pausal').textContent = fmt(pausalniCelkem);
+      const rozdil = klasickyCelkem - pausalniCelkem;
+      if (rozdil > 0){
+        sbBadge.textContent = `Paušální daň выгоднее на ${fmt(rozdil)} в год`;
+        sbBadge.className = 'sb-badge camel';
+      } else if (rozdil < 0){
+        sbBadge.textContent = `Классический режим выгоднее на ${fmt(-rozdil)} в год`;
+        sbBadge.className = 'sb-badge pass';
+      } else {
+        sbBadge.textContent = 'Оба режима обходятся одинаково';
+        sbBadge.className = 'sb-badge';
+      }
+    }
+  }
+
+  function resetOutputs(){
+    ['r_vydaje','r_zaklad','r_socialni','r_zdravotni','r_dan','r_celkem',
+     'p_pasmo','p_dan','p_socialni','p_zdravotni','p_mesic','p_celkem'].forEach(id => {
+      document.getElementById(id).textContent = '…';
+    });
+    document.getElementById('p_body').style.display = 'block';
+    document.getElementById('p_unavailable').style.display = 'none';
+    document.getElementById('p_sub').textContent = 'Фиксированный ежемесячный платёж';
+    document.getElementById('sb_classic').textContent = '…';
+    document.getElementById('sb_pausal').textContent = '…';
+    const sbBadge = document.getElementById('sb_badge');
+    sbBadge.textContent = 'Заполните данные';
+    sbBadge.className = 'sb-badge';
+  }
+
+  updateActivityHint();
+  resetOutputs();
+</script>
+
+</body>
+</html>

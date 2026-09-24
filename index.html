@@ -123,9 +123,29 @@
   .pasmo-card-price{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px;}
   .pasmo-card-price span{font-size:12px;font-weight:500;color:#8B8B8B;}
   .pasmo-detail-link{font-size:12px;color:var(--teal);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-family:'Inter',sans-serif;}
-  .pasmo-detail-reveal{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:11.5px;color:#5B5B5B;line-height:1.55;}
-  .pasmo-detail-reveal.open{max-height:240px;margin-top:8px;}
   .pasmo-note{background:var(--light-blue);border-radius:var(--radius-sm);padding:12px 14px;margin-top:16px;font-size:12px;color:#3E5876;line-height:1.5;}
+  .accordion-body .camel-note{background:var(--camel-bg);border-radius:var(--radius-sm);padding:12px 14px;margin-top:12px;font-size:13px;color:#6B5738;line-height:1.5;}
+
+  /* Модалка "Как определяется pásmo" */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(51,51,51,0.45);z-index:50;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:var(--white);border-radius:var(--radius);max-width:640px;width:100%;max-height:88vh;overflow-y:auto;padding:26px 26px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.18);}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:6px;}
+  .modal-head h3{font-size:19px;margin-bottom:0;}
+  .modal-close{background:var(--chrome);border:none;width:32px;height:32px;border-radius:50%;font-size:18px;line-height:1;color:#767676;cursor:pointer;flex:0 0 auto;}
+  .modal-close:hover{background:#E3DED2;color:var(--ink);}
+  .modal-lead{font-size:13.5px;color:#5B5B5B;margin:0 0 16px;}
+  .modal-table-wrap{overflow-x:auto;}
+  .modal-table{width:100%;border-collapse:collapse;min-width:460px;}
+  .modal-table th{text-align:center;font-size:13px;color:#767676;font-weight:600;padding:8px 6px;border-bottom:2px solid #E3DED2;}
+  .modal-table th:first-child{text-align:left;}
+  .modal-table td{text-align:center;padding:9px 6px;border-bottom:1px solid #EEE9DD;}
+  .modal-table td:first-child{text-align:left;font-weight:600;color:var(--ink);font-size:13.5px;}
+  .pasmo-pill{display:inline-block;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;}
+  .pasmo-pill.p1{background:var(--camel-dark);}
+  .pasmo-pill.p2{background:var(--fail);}
+  .pasmo-pill.p3{background:var(--teal-deep);}
+  .modal-footnote{font-size:12px;color:#8B8B8B;line-height:1.55;margin:16px 0 0;}
 
   /* Results */
   .result-title{margin-top:30px;font-size:22px;}
@@ -151,17 +171,15 @@
   .savings-text-value{font-size:19px;font-weight:700;color:var(--teal-deep);font-family:'Merriweather',serif;}
   .savings-text-sub{font-size:12px;color:#8B8B8B;margin-top:2px;}
 
-  /* Важно знать */
-  .important-card{display:flex;justify-content:space-between;align-items:center;gap:20px;background:var(--camel-bg);border-radius:var(--radius);padding:20px 22px;margin-top:18px;flex-wrap:wrap;}
-  .important-card h4{font-size:14.5px;margin-bottom:6px;color:var(--teal-deep);display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;}
-  .important-card ul{margin:0;padding-left:18px;font-size:13px;color:#5B5B5B;line-height:1.65;}
-  .scroll-btn{background:var(--white);border:1.5px solid #E3DED2;color:var(--teal-deep);padding:10px 18px;border-radius:100px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;flex:0 0 auto;}
-  .scroll-btn:hover{border-color:var(--sage);}
 
   /* Информационный раздел (аккордеон) */
   .info-section{margin-top:44px;}
   .info-section h2{font-size:23px;}
   .info-section .subtitle{color:#767676;font-size:13.5px;margin-bottom:8px;}
+  .disclaimer-line{font-size:12px;color:#8B8B8B;line-height:1.55;margin:0 0 20px;}
+  .info-subhead{display:flex;align-items:center;gap:10px;font-size:16px;margin:28px 0 4px;padding-left:14px;border-left:4px solid var(--sage);}
+  .info-subhead.pausal{border-left-color:var(--camel-dark);}
+  .info-subhead:first-of-type{margin-top:8px;}
   .accordion-item{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-top:12px;overflow:hidden;}
   .accordion-item summary{padding:18px 22px;cursor:pointer;font-weight:700;font-size:15px;color:var(--teal-deep);list-style:none;display:flex;justify-content:space-between;align-items:center;font-family:'Merriweather',serif;gap:14px;}
   .accordion-item summary::-webkit-details-marker{display:none;}
@@ -250,7 +268,7 @@
     <div class="field checkbox-field">
       <label class="checkbox-label">
         <input type="checkbox" id="newOsvc">
-        <span>Новая основная OSVČ <span style="opacity:.6;">ⓘ</span> Проверим право на пониженный минимум ČSSZ (первые 2 года ведения деятельности)</span>
+        <span>Новое OSVČ (применяется условие пониженного минимума ČSSZ на первые 2 года деятельности)</span>
       </label>
     </div>
   </div>
@@ -267,12 +285,7 @@
         </div>
         <div class="pasmo-card-cond">до 1 млн Kč для всех</div>
         <div class="pasmo-card-price">9 714 Kč <span>/ месяц</span></div>
-        <button type="button" class="pasmo-detail-link" data-detail="detail-1">Условия и исключения →</button>
-        <div class="pasmo-detail-reveal" id="detail-1">
-          Подходит при доходе до 1 000 000 Kč при любом виде деятельности. Также подходит при доходе до
-          1 500 000 Kč, если не менее 75% дохода приходится на виды деятельности с вычетом 80% или 60%,
-          и при доходе до 2 000 000 Kč, если не менее 75% дохода приходится на виды деятельности с вычетом 80%.
-        </div>
+        <button type="button" class="pasmo-detail-link" id="pasmoModalBtn1">Условия и исключения →</button>
       </div>
       <div class="pasmo-card" data-pasmo="2">
         <div class="pasmo-card-head">
@@ -281,11 +294,7 @@
         </div>
         <div class="pasmo-card-cond">до 1,5 млн Kč для всех</div>
         <div class="pasmo-card-price">16 745 Kč <span>/ месяц</span></div>
-        <button type="button" class="pasmo-detail-link" data-detail="detail-2">Условия и исключения →</button>
-        <div class="pasmo-detail-reveal" id="detail-2">
-          Подходит при доходе до 1 500 000 Kč при любом виде деятельности. Также подходит при доходе до
-          2 000 000 Kč, если не менее 75% дохода приходится на виды деятельности с вычетом 80% или 60%.
-        </div>
+        <button type="button" class="pasmo-detail-link" id="pasmoModalBtn2">Условия и исключения →</button>
       </div>
       <div class="pasmo-card" data-pasmo="3">
         <div class="pasmo-card-head">
@@ -294,13 +303,54 @@
         </div>
         <div class="pasmo-card-cond">до 2 млн Kč для всех</div>
         <div class="pasmo-card-price">27 139 Kč <span>/ месяц</span></div>
-        <button type="button" class="pasmo-detail-link" data-detail="detail-3">Условия и исключения →</button>
-        <div class="pasmo-detail-reveal" id="detail-3">
-          Подходит при доходе до 2 000 000 Kč при любом виде деятельности, без дополнительных условий.
-        </div>
+        <button type="button" class="pasmo-detail-link" id="pasmoModalBtn3">Условия и исключения →</button>
       </div>
     </div>
     <div class="pasmo-note">ⓘ Для доходов с вычетом 60% и 80% лимит может быть выше при соблюдении условия 75%.</div>
+  </div>
+
+  <!-- ===================== Модалка: условия и исключения pásma ===================== -->
+  <div class="modal-overlay" id="pasmoModalOverlay">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Как определяется pásmo</h3>
+        <button type="button" class="modal-close" id="pasmoModalClose" aria-label="Закрыть">&times;</button>
+      </div>
+      <p class="modal-lead">Pásmo зависит от годового дохода и от того, какую долю в нём занимают виды деятельности с вычетом 80% или 60%.</p>
+      <div class="modal-table-wrap">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th>Доход в год / вычет расходов</th>
+              <th>80%</th>
+              <th>60%</th>
+              <th>40%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>до 1 млн Kč</td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+            </tr>
+            <tr>
+              <td>до 1,5 млн Kč</td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+              <td><span class="pasmo-pill p2">Pásmo II</span></td>
+            </tr>
+            <tr>
+              <td>до 2 млн Kč</td>
+              <td><span class="pasmo-pill p1">Pásmo I</span></td>
+              <td><span class="pasmo-pill p2">Pásmo II</span></td>
+              <td><span class="pasmo-pill p3">Pásmo III</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="modal-footnote">Условие «не менее 75% дохода» означает, что более выгодное (меньшее) pásmo действует только тогда, когда указанная в колонке доля видов деятельности с этим вычетом составляет не менее 75% всего дохода. Если условие не выполняется, доход попадает в pásmo по строке «для всех».</p>
+    </div>
   </div>
 
   <h2 class="result-title">Ваш результат</h2>
@@ -336,63 +386,53 @@
     </div>
   </div>
 
-  <div class="important-card">
-    <div>
-      <h4>ⓘ Важно знать</h4>
-      <ul>
-        <li>Расчёт ориентировочный для планирования 2027 года</li>
-        <li>Учтена только базовая скидка на налогоплательщика</li>
-        <li>Точные суммы обновим после утверждения параметров</li>
-      </ul>
-    </div>
-    <button type="button" class="scroll-btn" id="howCalcBtn">Как считается результат →</button>
-  </div>
-
   <!-- ===================== Информационный раздел ===================== -->
   <section class="info-section">
-    <h2>Что нужно знать о paušální dani в 2027 году</h2>
-    <p class="subtitle">Коротко о том, как считается расчёт, кто может перейти на paušální daň, что нельзя учесть и как всё это платить</p>
+    <h2>Что важно знать</h2>
+    <p class="disclaimer-line">Показатели 2027 года (в том числе I pásmo paušální daně и порог 23%-й ставки налога) основаны на актуальных проектах постановлений правительства по состоянию на сентябрь 2026 года: окончательные цифры могут немного измениться после утверждения. Расчёт не заменяет индивидуальную налоговую консультацию.</p>
 
-    <details class="accordion-item" id="acc-metodika">
-      <summary>Что учитывает и не учитывает этот расчёт</summary>
+
+    <h3 class="info-subhead classic" id="acc-metodika">Классический режим</h3>
+    <details class="accordion-item" id="acc-classic-calc">
+      <summary>Как считается классический режим</summary>
       <div class="accordion-body">
-        <h4>Классический режим</h4>
         <ul>
-          <li>Výdaje (расходы) считаются либо процентом от дохода по каждому виду деятельности, либо берутся фактические расходы, которые вы указали</li>
-          <li>Sociální pojištění: 29,2% от 55% налоговой базы, но не менее минимальной годовой суммы (пониженной для новых OSVČ, если отмечен чекбокс)</li>
-          <li>Zdravotní pojištění: 13,5% от 50% налоговой базы, но не менее минимальной годовой суммы</li>
-          <li>Daň z příjmů: 15% с базы до порога, 23% с суммы выше порога, за вычетом базовой slevy na poplatníka (30 840 Kč в год)</li>
+          <li>Výdaje (расходы) считаются либо процентом от дохода по каждому виду деятельности, либо берутся фактические расходы, которые вы указали;</li>
+          <li>Sociální pojištění: 29,2% от 55% налоговой базы, но не менее минимальной годовой суммы (пониженной для новых OSVČ на первые 2 года деятельности). Ознакомиться с актуальными минимальными vyměřovacími základy по годам можно на официальном сайте <a href="https://www.cssz.gov.cz/vyse-minimalnich-vymerovacich-zakladu-osvc" target="_blank" rel="noopener">OSSZ</a>;</li>
+          <li>Zdravotní pojištění: 13,5% от 50% налоговой базы, но не менее минимальной годовой суммы. Ознакомиться с актуальными минимальными zálohami можно на официальном сайте <a href="https://www.vzp.cz/platci/informace/osvc/osvc-minimalni-vyse-zaloh" target="_blank" rel="noopener">VZP</a>;</li>
+          <li>Daň z příjmů: 15% с части базы до порога и 23% с суммы, превышающей порог, за вычетом базовой slevy na poplatníka (30 840 Kč в год).</li>
         </ul>
-        <h4>Paušální daň</h4>
+        <p class="camel-note">Не учтены льготы на детей, на супруга или супругу без дохода, на инвалидность, на ZTP/P, убытки прошлых лет и другие налоговые скидки, кроме базовой slevy na poplatníka, а также кадровые расходы, если у вас есть сотрудники.</p>
+      </div>
+    </details>
+
+    <h3 class="info-subhead pausal">Paušální daň</h3>
+    <details class="accordion-item" id="acc-pausal-calc">
+      <summary>Как считается paušální daň</summary>
+      <div class="accordion-body">
         <ul>
-          <li>Берётся фиксированная сумма выбранного вами pásma за 2027 год, умноженная на 12 месяцев</li>
-          <li>Pásmo выбирается вами вручную, а не рассчитывается автоматически по доходу: расчёт лишь подсказывает бейджем, подходит ли выбранное pásmo под введённые данные</li>
+          <li>Берётся фиксированная сумма выбранного вами pásma за 2027 год, умноженная на 12 месяцев;</li>
+          <li>Pásmo вы выбираете вручную, а не по формуле от дохода: расчёт лишь подсказывает бейджем, подходит ли выбранное pásmo под введённые данные.</li>
         </ul>
-        <h4>Что НЕ учтено</h4>
-        <ul>
-          <li>Льготы на детей, на супруга/супругу без дохода, на инвалидность, ZTP/P, убытки прошлых лет и другие налоговые скидки, кроме базовой slevy na poplatníka</li>
-          <li>НДС и статус identifikované osoby</li>
-          <li>Кадровые расходы, если у вас есть сотрудники</li>
-        </ul>
-        <p>Показатели 2027 года (в том числе I pásmo paušální daně и порог 23%-й ставки налога) основаны на актуальных проектах постановлений правительства по состоянию на сентябрь 2026 года, окончательные цифры могут немного измениться после утверждения. Расчёт не заменяет индивидуальную налоговую консультацию.</p>
+        <p class="camel-note">Не учтены НДС и статус identifikované osoby.</p>
       </div>
     </details>
 
     <details class="accordion-item">
       <summary>Кто может перейти на paušální daň в 2027 году</summary>
       <div class="accordion-body">
-        <p>Чтобы перейти на paušální daň с 1 января 2027 года, на эту дату должны выполняться все условия:</p>
+        <p>Чтобы перейти на paušální daň с 1 января 2027 года, на эту дату у вас должны выполняться все условия:</p>
         <ul>
-          <li>в 2026 году доход не превысил 2 000 000 Kč (не считая доходов, освобождённых от налога, не являющихся предметом налога, или обложенных сборовой налогом)</li>
-          <li>вы не плательщик НДС, но можете быть identifikovanou osobou</li>
-          <li>в 2027 году вы не работаете по трудовому договору, кроме доходов, обложенных сборовой налогом без подписанного Prohlášení poplatníka</li>
-          <li>вы застрахованы по пенсионному страхованию как OSVČ на hlavní činnost</li>
-          <li>вы застрахованы по медицинскому страхованию как OSVČ на hlavní činnost (условие не выполняется, если вы не платите взносы из-за долгосрочного пребывания за границей)</li>
-          <li>вы не являетесь společníkem veřejné obchodní společnosti и не komplementářem komanditní společnosti</li>
-          <li>вы не должник в insolvenčním řízení</li>
-          <li>доходы от капитального имущества, аренды и прочие доходы в сумме не превышают 50 000 Kč в год (доходы, обложенные сборовой налогом по особой ставке, например проценты на счёте или проценты по ценным бумагам, в лимит не входят)</li>
+          <li>в 2026 году доход от предпринимательской деятельности не превысил 2 000 000 Kč (не считая доходов, освобождённых от налога, не относящихся к предмету налога, либо облагаемых налогом, удержанным у источника выплаты);</li>
+          <li>вы не являетесь плательщиком НДС, но можете быть identifikovanou osobou;</li>
+          <li>в 2027 году вы не работаете по трудовому договору, за исключением доходов, облагаемых налогом, удержанным у источника выплаты, если не подписано Prohlášení poplatníka;</li>
+          <li>вы застрахованы по пенсионному страхованию как OSVČ на hlavní činnost;</li>
+          <li>вы застрахованы по медицинскому страхованию как OSVČ на hlavní činnost (это условие не выполняется, если вы не платите взносы из-за длительного пребывания за границей);</li>
+          <li>вы не являетесь společníkem veřejné obchodní společnosti и не komplementářem komanditní společnosti;</li>
+          <li>вы не являетесь должником в insolvenčním řízení;</li>
+          <li>доходы от капитального имущества, аренды и прочие подобные доходы в сумме не превышают 50 000 Kč в год (доходы, облагаемые налогом по особой ставке, удержанным у источника, например проценты по счёту или по ценным бумагам, в этот лимит не включаются).</li>
         </ul>
-        <p>Заявление «Oznámení o vstupu do paušálního režimu» нужно подать в финансовое управление до 10 января 2027 года (если этот день выпадает на выходной, срок переносится на ближайший рабочий день). Подать можно через datovou schránku, портал Moje daně, почтой или лично. Если вы уже в режиме с 2026 года и не собираетесь выходить, заново подавать заявление не нужно, режим продлевается автоматически. OSVČ, начинающая деятельность в течение 2027 года, подаёт заявление о вступлении в paušální режим одновременно с регистрацией самостоятельной деятельности.</p>
+        <p>Заявление «Oznámení o vstupu do paušálního režimu» нужно подать в налоговую до 10 января 2027 года (если этот день выпадает на выходной, срок переносится на ближайший рабочий день). Подать его можно через datovou schránku, портал Moje daně, по почте или лично. Если вы уже в режиме с 2026 года и не планируете из него выходить, повторно подавать заявление не нужно: режим продлевается автоматически. OSVČ, которая начинает деятельность в течение 2027 года, подаёт заявление о вступлении в paušální режим одновременно с регистрацией самостоятельной деятельности.</p>
       </div>
     </details>
 
@@ -401,23 +441,23 @@
       <div class="accordion-body">
         <p>Находясь на paušální dani, вы не можете:</p>
         <ul>
-          <li>учитывать фактические или процентные výdaje (расходы), они уже «зашиты» в фиксированный платёж</li>
-          <li>применять налоговые скидки и льготы: на второго супруга без дохода, на частичную или полную инвалидность, на ZTP/P, на детей, а также списывать убытки прошлых лет или дары</li>
-          <li>вычитать проценты по ипотеке, взносы по страхованию жизни или пенсионному накоплению</li>
-          <li>распределять доходы на сотрудничающее лицо (spolupracující osobu, например супруга)</li>
+          <li>учитывать фактические или процентные výdaje (расходы): они уже включены в фиксированный платёж;</li>
+          <li>применять налоговые скидки и льготы: на супруга или супругу без дохода, на частичную или полную инвалидность, на ZTP/P, на детей, а также списывать убытки прошлых лет или дары;</li>
+          <li>вычитать проценты по ипотеке, взносы по страхованию жизни или пенсионному накоплению;</li>
+          <li>распределять доходы на сотрудничающее лицо (spolupracující osobu, например на супруга или супругу).</li>
         </ul>
-        <p>Именно поэтому режим удобен для простых ситуаций без детей, ипотеки и совместного бизнеса с супругом, но невыгоден, если вы обычно активно используете эти льготы в классическом режиме.</p>
+        <p class="camel-note">Именно поэтому режим удобен для простых ситуаций без детей, ипотеки и совместного бизнеса с супругом, но невыгоден, если вы обычно активно используете эти льготы в классическом режиме.</p>
       </div>
     </details>
 
     <details class="accordion-item">
       <summary>Как и когда платить paušální daň</summary>
       <div class="accordion-body">
-        <p>Paušální záloha платится ежемесячно до 20 числа каждого месяца на счёт вашего местного финансового управления. Можно платить каждый месяц, а можно внести сразу несколько месяцев или весь год вперёд.</p>
-        <p>Номер счёта строится по схеме <b>2866-МАТРИКА/0710</b>, где 2866: предчислие для paušální daně, а 0710: код ČNB. В платеже обязательно нужно указать variabilní symbol, которым для физического лица обычно выступает rodné číslo.</p>
+        <p>Paušální záloha платится ежемесячно до 20 числа каждого месяца на счёт вашей местной налоговой. Можно платить каждый месяц, а можно внести сразу несколько месяцев или весь год вперёд.</p>
+        <p>Номер счёта строится по схеме <b>2866-МАТРИКА/0710</b>, где 2866, это předčíslí (префикс) для paušální daně, а 0710, код ČNB (банка). В платеже обязательно нужно указать variabilní symbol, в качестве которого для физического лица обычно выступает rodné číslo.</p>
         <div class="bank-table-wrap">
           <table class="bank-table">
-            <tr><th>Финансовое управление</th><th>Счёт для paušální daně</th></tr>
+            <tr><th>Налоговая</th><th>Счёт для paušální daně</th></tr>
             <tr><td>Hlavní město Praha</td><td>2866-77628031/0710</td></tr>
             <tr><td>Středočeský kraj</td><td>2866-77628111/0710</td></tr>
             <tr><td>Jihočeský kraj</td><td>2866-77627231/0710</td></tr>
@@ -441,12 +481,13 @@
     <details class="accordion-item">
       <summary>Нужно ли подавать налоговую декларацию</summary>
       <div class="accordion-body">
-        <p>Если вы весь год оставались в paušálním режиме и не нарушали условий, отдельную daňové přiznání, а также přehledy для OSSZ и zdravotní pojišťovny подавать не нужно, режим это заменяет.</p>
-        <p>Декларацию всё же придётся подать, если условия были нарушены в течение года, либо если, помимо предпринимательской деятельности, у вас были другие доходы (§8 до §10 zákona), не обложенные сборовой налогом, не освобождённые от налога и превышающие в сумме 50 000 Kč за год. Например:</p>
+        <p>Если вы весь год оставались в paušálním режиме и не нарушали его условий, подавать отдельную daňové přiznání, а также přehledy для OSSZ и zdravotní pojišťovny не нужно: режим их заменяет.</p>
+        <p>Декларацию всё же придётся подать, если в течение года условия были нарушены, либо если, помимо предпринимательской деятельности, у вас были другие доходы (§8-§10 zákona), которые не облагаются налогом, удержанным у источника выплаты, не освобождены от налога и в сумме превышают 50 000 Kč за год.</p>
+        <p>Например:</p>
         <ul>
-          <li>дивиденды внутри Чехии обычно облагаются сборовой налогом и в лимит 50 000 Kč не засчитываются</li>
-          <li>доход от аренды в лимит засчитывается</li>
-          <li>доход от продажи ценных бумаг засчитывается, если он не освобождён от налога (например, не прошёл по стоимостному тесту в 100 000 Kč или по тесту владения в 3 года)</li>
+          <li>дивиденды внутри Чехии обычно облагаются налогом, удержанным у источника выплаты, и в лимит 50 000 Kč не засчитываются;</li>
+          <li>доход от аренды в этот лимит засчитывается;</li>
+          <li>доход от продажи ценных бумаг засчитывается, если он не освобождён от налога (например, не подпадает под освобождение по стоимостному тесту в 100 000 Kč или по тесту владения в течение 3 лет).</li>
         </ul>
       </div>
     </details>
@@ -456,22 +497,22 @@
       <div class="accordion-body">
         <h4>Когда вы обязаны выйти из режима</h4>
         <ul>
-          <li>доходы от предпринимательской деятельности за год превысили 2 000 000 Kč: в следующем году применяется уже только классический режим</li>
-          <li>вы стали плательщиком НДС</li>
+          <li>доходы от предпринимательской деятельности за год превысили 2 000 000 Kč: в следующем году применяется уже только классический режим;</li>
+          <li>вы стали плательщиком НДС;</li>
           <li>вы стали společníkem v.o.s. или komplementářem k.s.</li>
         </ul>
-        <p>Об этом нужно сообщить в финансовое управление в течение 15 дней. Paušální zálohy при этом продолжают платиться до конца года, а после его окончания подаётся daňové přiznání и přehledy для OSSZ и zdravotní pojišťovny так, как если бы вы весь год были в классическом режиме: уплаченные paušální zálohy засчитываются, разница доплачивается или возвращается.</p>
+        <p>Об этом нужно сообщить в налоговую в течение 15 дней. Paušální zálohy при этом продолжают платиться до конца года, а после его окончания подаётся daňové přiznání и přehledy для OSSZ и zdravotní pojišťovny так, как если бы вы весь год были в классическом режиме: уплаченные paušální zálohy будут зачтены, а разница доплачена или возвращена.</p>
         <h4>Добровольный выход</h4>
-        <p>Выйти из paušálního режима по собственному желанию можно только с начала календарного года, подав уведомление до 10 числа января года, с которого хотите вернуться к обычным zálohám. Если OSVČ прекращает или приостанавливает деятельность в течение года, режим прекращается вместе с ней.</p>
+        <p>Выйти из paušálního режима по собственному желанию можно только с начала календарного года, подав уведомление до 10 января года, с которого хотите вернуться к обычным zálohám. Если OSVČ прекращает или приостанавливает деятельность в течение года, вместе с ней прекращается и paušální режим.</p>
         <h4>Нарушения, которые НЕ требуют выхода из режима</h4>
-        <p>Декларацию придётся подать, но оставаться в paušálním режиме можно, если помимо предпринимательства у вас были доходы, не облагаемые сборовой налогом и превышающие в сумме 50 000 Kč (например, доход от аренды или продажи ценных бумаг), либо доходы по трудовому договору без подписанного Prohlášení poplatníka.</p>
+        <p>Декларацию придётся подать, но оставаться в paušálním режиме можно, если, помимо предпринимательской деятельности, у вас были доходы, которые не облагаются налогом, удержанным у источника выплаты, и в сумме превышают 50 000 Kč (например, доход от аренды или от продажи ценных бумаг), либо доходы по трудовому договору, если не подписано Prohlášení poplatníka.</p>
       </div>
     </details>
 
     <details class="accordion-item">
       <summary>Как подать заявление на paušální daň</summary>
       <div class="accordion-body">
-        <p>Заявление «Oznámení o vstupu do paušálního režimu» можно подать через datovou schránku, портал Moje daně, отправить почтой или отнести лично в финансовое управление. Официальную пошаговую инструкцию Минфина Чехии можно посмотреть на сайте <a href="https://financnisprava.gov.cz" target="_blank" rel="noopener">financnisprava.gov.cz</a>.</p>
+        <p>Заявление «Oznámení o vstupu do paušálního režimu» можно подать через datovou schránku, портал Moje daně, отправить по почте или отнести лично в налоговую. Официальную пошаговую инструкцию Минфина Чехии можно найти на сайте <a href="https://financnisprava.gov.cz" target="_blank" rel="noopener">financnisprava.gov.cz</a>.</p>
       </div>
     </details>
 
@@ -615,17 +656,25 @@
   document.querySelectorAll('.pasmo-detail-link').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      document.getElementById(btn.dataset.detail).classList.toggle('open');
+      document.getElementById('pasmoModalOverlay').classList.add('open');
     });
   });
+  document.getElementById('pasmoModalClose').addEventListener('click', () => {
+    document.getElementById('pasmoModalOverlay').classList.remove('open');
+  });
+  document.getElementById('pasmoModalOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'pasmoModalOverlay') e.currentTarget.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.getElementById('pasmoModalOverlay').classList.remove('open');
+  });
 
-  function openInfo(id){
-    const el = document.getElementById(id);
-    el.open = true;
-    el.scrollIntoView({ behavior:'smooth', block:'start' });
+  function openInfo(){
+    document.getElementById('acc-classic-calc').open = true;
+    document.getElementById('acc-pausal-calc').open = true;
+    document.getElementById('acc-metodika').scrollIntoView({ behavior:'smooth', block:'start' });
   }
-  document.getElementById('whatCountsBtn').addEventListener('click', () => openInfo('acc-metodika'));
-  document.getElementById('howCalcBtn').addEventListener('click', () => openInfo('acc-metodika'));
+  document.getElementById('whatCountsBtn').addEventListener('click', openInfo);
 
   function calculate(){
     const rows = Array.from(activityRowsEl.querySelectorAll('.activity-row'));
